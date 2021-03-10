@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body style="background: dimgray;">
+	<input type="file" id="file-selector" class="test" accept=".json">
+	<br>
+	<button type="button" onclick="readFile(document.getElementsByClassName('test')[0])">Load!</button>
+	<br>
+	<div class="output"></div>
+	<script type="text/javascript">
+		var output=document.getElementsByClassName("output")[0]
+
+		function readFile(input) {
+			console.log(input);
+  let file = input.files[0];
+
+  let reader = new FileReader();
+
+  reader.readAsText(file);
+
+  reader.onerror = function() {
+    console.log(reader.error);
+  };
+
+  reader.onload = function() {
+		var a = JSON.parse(reader.result);
+		var b = Object.values(Object.values(a))[1];
+		if (a.format_version == "1.10.0"){
+		console.log(b.bones);
+		var res = "Rotation:";
+		for (let i=0; i<b.bones.length;i++){
+			if(b.bones[i].rotation!=undefined){
+				//res = res+"<br>" + b.bones[i].name + ' = ' + b.bones[i].rotation
+				res = res+ "<br>" + 'setRotation(model,"'+ b.bones[i].name +'",'+ b.bones[i].rotation +');';
+			} else {
+				//res = res+"<br>" + b.bones[i].name + ' = ' + '0,0,0'
+				res = res+ "<br>" + 'setRotation(model,"'+ b.bones[i].name +'",0,0,0);';
+			}
+			output.innerHTML = res
+			console.log(b.bones[i].name);
+		}
+	} else if (a.format_version != undefined){
+		output.innerHTML = "Вы пытаетесь загрузить модель, формат которой: "+ a.format_version + " Этот формат моделей не поддерживается в данный момент!";
+	} else if (a.name == undefined){
+		output.innerHTML = "Кажется вы загрузили json файл который не является моделью или не имеет format_version. Проверьте правильность выбронного файла и попробуйте заного.";
+	} else {
+		output.innerHTML = "Кажется вы выбрали не модель персонажа а файл model.json. Не смотря на его название он не является моделью. Пажалуйста выберете другой json файл.";
+	}
+
+		};
+
+  
+
+}
+		//Object.values() length
+	</script>
+</body>
+</html>
