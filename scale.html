@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Счетчик роста персонажа для CPM</title>
+</head>
+<body>
+	 <b><input id="num"/> - your character's height in centimeters | рост вашего персонажа в сантиметрах<br>
+	 <button onclick="cpm_size(document.getElementById('num').value)">CPM size</button>
+	 <div class="output">180cm: /cpm scale 1.000</div></b>
+	<script type="text/javascript">
+		var output=document.getElementsByClassName("output")[0];
+		function cpm_size(x) {
+			var c = x/100-0.8
+			var res = c.toFixed(3);
+			var d = " "
+			if (res <= 0){
+				d = " - ERROR! The command is not valid! You have indicated too small height. | Ошибка! Команда не действительна! Вы указали слишком маленький рост."
+			}
+			var txt = output.innerHTML
+			output.innerHTML = x+ 'cm: /cpm scale '+ res + d + "<br>"+txt;
+		};
+	</script>
+</body>
+</html>
