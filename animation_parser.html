@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body style="background: dimgray;">
+	<input type="file" id="file-selector" class="test" accept=".json">
+	<br>
+	<button type="button" onclick="readFile(document.getElementsByClassName('test')[0])">Load!</button>
+	<br>
+	<div class="output"></div>
+	<script type="text/javascript">
+		var output=document.getElementsByClassName("output")[0]
+
+		function readFile(input) {
+			console.log(input);
+  let file = input.files[0];
+
+  let reader = new FileReader();
+
+  reader.readAsText(file);
+
+  reader.onerror = function() {
+    console.log(reader.error);
+  };
+
+  reader.onload = function() {
+		var a = JSON.parse(reader.result);
+		var b = Object.values(Object.values(a))[1];
+		var c = Object.values(Object.values(b))[0];
+		var d = Object.values(Object.values(c))[2];
+		if (a.format_version == "1.8.0"){
+		console.log(Object.keys(d));
+		var res = "Rotation animation:";
+		for (var i=0; i<Object.values(d).length;i++){
+			var bones_name = JSON.stringify(Object.keys(d)[i]).replace(/['"]+/g, '')
+			var res_temp = ''
+			console.log(bones_name);
+			if(Object.values(d)[i].rotation!=undefined){
+			for (let i1=0; i1<Object.values(Object.values(d)[i].rotation).length;i1++){
+				//console.log(Object.keys(Object.values(d)[i].rotation)[i1]);
+				//console.log(Object.values(Object.values(d)[i].rotation)[i1].post);
+			if (Object.values(Object.values(d)[i].rotation)[i1].post==undefined){
+				res_temp = res_temp+Object.keys(Object.values(d)[i].rotation)[i1]+',['+Object.values(Object.values(d)[i].rotation)[i1]+'],'
+				console.log(res_temp)
+			} else {
+						res_temp = res_temp+Object.keys(Object.values(d)[i].rotation)[i1]+',['+Object.values(Object.values(d)[i].rotation)[i1].post+'],'
+						console.log(res_temp)
+						}
+				}
+			res= res+'<br>'+'animation_rotation(entity,model,['+res_temp.slice(0, -1)+'],'+c.animation_length+",'"+bones_name+"',0,0,0);"
+			output.innerHTML = res
+		}
+		res_temp = ''
+		if(Object.values(d)[i].position!=undefined) {
+					console.log('Поворотов нет!')
+					for (let i1=0; i1<Object.values(Object.values(d)[i].position).length;i1++){
+				//console.log(Object.keys(Object.values(d)[i].rotation)[i1]);
+				//console.log(Object.values(Object.values(d)[i].rotation)[i1].post);
+			if (Object.values(Object.values(d)[i].position)[i1].post==undefined){
+				res_temp = res_temp+Object.keys(Object.values(d)[i].position)[i1]+',['+Object.values(Object.values(d)[i].position)[i1]+'],'
+				console.log(res_temp)
+			} else {
+						res_temp = res_temp+Object.keys(Object.values(d)[i].position)[i1]+',['+Object.values(Object.values(d)[i].position)[i1].post+'],'
+						console.log(res_temp)
+						}
+				}
+			res= res+'<br>'+'animation_position(entity,model,['+res_temp.slice(0, -1)+'],'+c.animation_length+",'"+bones_name+"',0,0,0);"
+			output.innerHTML = res
+
+				}
+		}
+	} else if (a.format_version != undefined){
+		output.innerHTML = "Вы пытаетесь загрузить модель, формат которой: "+ a.format_version + " Этот формат моделей не поддерживается в данный момент!";
+	} else if (a.name == undefined){
+		output.innerHTML = "Кажется вы загрузили json файл который не является моделью или не имеет format_version. Проверьте правильность выбронного файла и попробуйте заного.";
+	} else {
+		output.innerHTML = "Кажется вы выбрали не модель персонажа а файл model.json. Не смотря на его название он не является моделью. Пажалуйста выберете другой json файл.";
+	}
+
+		};
+
+  
+
+}
+		//Object.values() length
+	</script>
+</body>
+</html>
