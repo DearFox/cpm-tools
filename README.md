@@ -7,3 +7,4 @@ https://dearfox.github.io/cpm-tools/scale.html - Калькулятор рост
 
 https://dearfox.github.io/cpm-tools/animation_parser.html - Выбирите json файл с анимацией который экспортировали из Blockbench (поддерживаются bedrock анимации версии 1.8.0)
 Обратите анимание! Что для работы animation_parser вам нужы две функции. В данный момент реализована только линейная интерполяция для поворота и позиции. 
+Вы также можете посмотреть это для встраивания анимаций в свои модели: https://github.com/val9k/CPM_catmull_rom_interpolation
